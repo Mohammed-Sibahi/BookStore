@@ -1,0 +1,46 @@
+﻿@typeparam TItemType
+
+<div class="grid-container">
+    @if (Items != null && Items.Any())
+    {
+        foreach (var item in Items)
+        {
+            <div class="grid-item" style="width:@_columnWidth%" 
+            @onclick="() => OnItemClicked.InvokeAsync(item)">
+                @ItemTemplate(item)
+            </div>
+        }
+    }
+    else
+    {
+        <!-- Here can be used to show how the empty
+        list will be handeled -->
+        <h3 class="empty-collection-title">
+            No items available
+        </h3>
+    }
+</div>
+
+@code{
+
+
+    [Parameter]
+    public List<TItemType>? Items { get; set; }
+
+    [Parameter]
+    public RenderFragment<TItemType> ItemTemplate { get; set; }
+
+    [Parameter]
+    public EventCallback<TItemType> OnItemClicked { get; set; }
+
+    [Parameter]
+    public int ColumnsCount { get; set; } = 4;
+
+    private int _columnWidth;
+
+    protected override void OnInitialized()
+    {
+        _columnWidth = 100 / ColumnsCount;
+    }
+}
+
